@@ -1,0 +1,138 @@
+UNEMPLOYMENT CLAIMS TEST CASES
+============================
+
+1. SHORT EMPLOYMENT (Should be DENIED)
+------------------------------------
+SSN: 3574
+Employer: Quick Temp
+Separation Reason: Seasonal work ended
+Earnings: $4,200
+Employment Months: 2
+
+Expected Result: DENIED
+Reasons:
+- Employment duration (2 months) < 6 months required
+- Employer is in blacklist (Quick Temp)
+
+2. HIGH EARNINGS (Should be DENIED)
+----------------------------------
+SSN: 9999
+Employer: Fraud LLC
+Separation Reason: Terminated after 1 month
+Earnings: $45,000
+Employment Months: 1
+
+Expected Result: DENIED
+Reasons:
+- Employment duration (1 month) < 6 months
+- Employer is in blacklist (Fraud LLC)
+- Earnings ($45,000) > $15,000 maximum
+
+3. VOLUNTARY QUIT (Should be DENIED)
+-----------------------------------
+SSN: 1001
+Employer: Wayne Enterprises
+Separation Reason: I quit due to personal reasons
+Earnings: $8,500
+Employment Months: 18
+
+Expected Result: DENIED
+Reasons:
+- Contains "quit" in separation reason
+
+4. VALID CLAIM (Should be APPROVED)
+----------------------------------
+SSN: 1042
+Employer: Globex
+Separation Reason: End of contract (non-renewal)
+Earnings: $3,902
+Employment Months: 18
+
+Expected Result: APPROVED
+Reasons:
+- Employment duration (18 months) > 6 months
+- Earnings ($3,902) > $3,000 minimum
+- Not a voluntary quit
+- Employer not in blacklist
+- Earnings < $15,000
+
+5. BORDERLINE CASE (Should be APPROVED)
+--------------------------------------
+SSN: 1012
+Employer: Wayne Enterprises
+Separation Reason: Business relocation
+Earnings: $3,003
+Employment Months: 10
+
+Expected Result: APPROVED
+Reasons:
+- Employment duration (10 months) > 6 months
+- Earnings ($3,003) > $3,000 minimum
+- Not a voluntary quit
+- Employer not in blacklist
+- Earnings < $15,000
+
+6. AUTOMATION LAYOFF (Should be APPROVED)
+----------------------------------------
+SSN: 1018
+Employer: Globex
+Separation Reason: Position eliminated due to automation
+Earnings: $10,464
+Employment Months: 34
+
+Expected Result: APPROVED
+Reasons:
+- Employment duration (34 months) > 6 months
+- Earnings ($10,464) > $3,000 minimum
+- Not a voluntary quit
+- Employer not in blacklist
+- Earnings < $15,000
+
+7. MERGER DOWNSIZING (Should be APPROVED)
+----------------------------------------
+SSN: 1070
+Employer: Initech
+Separation Reason: Company downsizing after merger
+Earnings: $4,026
+Employment Months: 25
+
+Expected Result: APPROVED
+Reasons:
+- Employment duration (25 months) > 6 months
+- Earnings ($4,026) > $3,000 minimum
+- Not a voluntary quit
+- Employer not in blacklist
+- Earnings < $15,000
+
+8. DEPARTMENT CLOSURE (Should be APPROVED)
+-----------------------------------------
+SSN: 1066
+Employer: Initech
+Separation Reason: Department closure after corporate restructuring
+Earnings: $3,020
+Employment Months: 36
+
+Expected Result: APPROVED
+Reasons:
+- Employment duration (36 months) > 6 months
+- Earnings ($3,020) > $3,000 minimum
+- Not a voluntary quit
+- Employer not in blacklist
+- Earnings < $15,000
+
+ELIGIBILITY RULES
+================
+1. Minimum Employment: employment_months >= 6
+2. Minimum Earnings: earnings >= 3000
+3. Voluntary Quit: No claims with 'quit' or 'resigned' in separation reason
+4. Employer Blacklist: No claims from ['Fake Corp', 'Fraud LLC', 'Shell Co', 'Quick Temp']
+5. Maximum Earnings: earnings <= 15000
+
+FRAUD PATTERNS
+=============
+1. Fake termination letter with forged signatures (Severity: 4)
+2. Employer-employee collusion (shell companies) (Severity: 5)
+3. Earnings inflation (reporting fake overtime) (Severity: 3)
+4. Duplicate claims across state lines (Severity: 4)
+5. Fabricated harassment allegations (Severity: 4)
+6. Misclassified independent contractors (Severity: 3) 
